@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<!-- 
+		通过静态工厂方法配置bean
+			注意不是配置 静态工厂方法实例！！
+				而是配置Bean的实例！！！！！
+		class：指向静态工厂方法
+		factory-method：
+		<constructor-arg value="Audi">：method传入参数
+		 -->
+	<bean id="car1" class="spring.beans.factory.StaticCarFactory" 
+		factory-method="getCar">
+		<!-- 获取静态块中已经初始化的Car对象 -->
+		<constructor-arg value="Audi"></constructor-arg>	
+	</bean>
+	
+	<!-- 配置工厂的实例 -->
+	<bean id="carFactory" class="spring.beans.factory.InstanceCarFactory"></bean>
+	<!-- 通过实例工厂方法配置bean -->
+	<bean id="car2" factory-bean="carFactory" factory-method="getCar">
+		<constructor-arg value="BenChi"></constructor-arg>
+	</bean>
+</beans>

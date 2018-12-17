@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- 配置自动扫描的包 -->
+	<!-- <context:component-scan base-package="spring.aop.xml"></context:component-scan> -->
+	
+	<!-- 
+		使aspectJ注解起作用： 
+		当ioc容器监测到该注解，会自动为与 AspectJ 切面匹配的 Bean 创建代理
+		-->
+	<!-- <aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
+	
+	<!-- 配置bean -->
+	<bean id="arithmeticCalculator" class="spring.aop.xml.ArithmeticCalculatorImpl"></bean>
+	
+	<!-- 配置切面的bean -->
+	<bean id="testAspect" class="spring.aop.xml.TestAspect"></bean>
+	
+	<!-- 配置aop -->
+	<aop:config>
+		<!-- 配置切点表达式 -->
+		<aop:pointcut expression="execution(* spring.aop.xml.ArithmeticCalculator.*(..))" 
+			id="pointcut"/>
+		<!-- 配置切面及通知 -->
+		<aop:aspect ref="testAspect" order="1">
+			<aop:before method="testBefore" pointcut-ref="pointcut"/>
+			<aop:after method="testAfter" pointcut-ref="pointcut"/>
+			<aop:after-returning method="afterReturning" pointcut-ref="pointcut" returning="result"/>
+			<aop:after-throwing method="afterThrowing" pointcut-ref="pointcut" throwing="ex"/>
+			<aop:around method="around" pointcut-ref="pointcut" />
+		</aop:aspect>
+	</aop:config>
+	
+	
+</beans>

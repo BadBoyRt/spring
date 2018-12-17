@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	 
+	 <!-- 自动装配的配置文件 -->
+	 
+	 
+	 <bean id="address" class="spring.beans.autowire.Address" 
+	 	p:city="Beijing" p:street="tiantongyaun"></bean>
+	 <bean id="address2" class="spring.beans.autowire.Address" 
+	 	p:city="Beijing" p:street="tiantongyaun"></bean>
+	 <bean id="book" class="spring.beans.autowire.Book" 
+	 	p:name="语文" p:price="29"></bean>
+	 <bean id="book2" class="spring.beans.autowire.Book" 
+	 	p:name="数学" p:price="33"></bean>
+	 	
+	 <!-- 通用list -->
+	 <util:list id="books">
+	 	<ref bean="book"/>
+	 	<ref bean="book2"/>
+	 </util:list>
+	 <!-- 非自动装配方式 -->	
+	 <bean id="student" class="spring.beans.autowire.Student" 
+	 	p:name="xiaoming" p:age="17" p:address-ref="address" p:books-ref="books"></bean>
+	 	
+	 <!-- 
+	 	自动装配方式 :
+	 	byName:IOC容器中的bean的id（address、books）必须和Students类中的Setter方法的名字相对应。若无匹配，则不装配。
+	 	byType:根据类型装配。要求类型唯一，如果有两个address(address,address2)则装配失败
+	 	-->
+	<bean id="autowire_byName" class="spring.beans.autowire.Student" 
+		p:name="autowire" p:age="17" autowire="byName"></bean>
+		
+	<!-- 此处修改address的bean id为address2，byName则不生效 -->
+	<!-- <bean id="autowire_byType" class="spring.beans.autowire.Student" 
+		p:name="autowire_type" p:age="17" autowire="byType"></bean> -->
+		
+	
+</beans>

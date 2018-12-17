@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+	<!-- 指定IOC容器扫描的包:会自动扫描标识了Component、Repository、Service、Controller
+		base-package:指定一个需要扫描的基类包，Spring 容器将会扫描这个基类包里及其子包中的所有类。当需要扫描多个包时, 可以使用逗号分隔
+		
+		还会自动注册AutowiredAnnotationBeanPostProcessor实例，他是Bean的一个后置处理器。该实例可以自动装配@Autowired和@Resource、@Inject注解的属性
+		
+		 -->
+	<context:component-scan base-package="spring.beans.annotation">
+	</context:component-scan>
+
+	<!-- 只扫描指定子包下的类 -->
+	<!-- <context:component-scan base-package="spring.beans.annotation" 
+		resource-pattern="service/*.class">
+		
+	</context:component-scan> -->
+	
+	<!-- context:exclude-filter:子节点指定排除哪些指定表达式的组件 -->
+	<!-- <context:component-scan base-package="spring.beans.annotation" >
+		<context:exclude-filter type="annotation" 
+			expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan> -->
+	
+	<!--context:include-filter:子节点指定 包含  哪些指定表达式的组件， 需配合use-default-filters="false"使用 -->
+	<!-- <context:component-scan base-package="spring.beans.annotation" 
+		use-default-filters="false">
+		只包含 Repository
+		<context:include-filter type="annotation" 
+			expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan> -->
+	
+	<!--不包含 UserRepository接口及其实现类 -->
+	<!-- <context:component-scan base-package="spring.beans.annotation" >
+		<context:exclude-filter type="assignable" 
+			expression="spring.beans.annotation.repository.UserRepository"/>
+	</context:component-scan> -->
+	
+	<!-- 只包含 -->
+	<!-- <context:component-scan base-package="spring.beans.annotation" use-default-filters="false">
+		<context:include-filter type="assignable" 
+			expression="spring.beans.annotation.repository.UserRepository"/>
+	</context:component-scan> -->
+	
+
+</beans>

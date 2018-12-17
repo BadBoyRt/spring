@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+	 <!--bean生命周期-->
+	 
+	 <!-- 
+	 	init-method名字叫什么无所谓，和bean对应上就行 
+	 	-->
+	 <bean id="car" class="spring.beans.cycle.Car"
+	 	init-method="init2" 
+	 	destroy-method="destroy" >
+	 
+	 	<property name="name" value="#{'Audi'}"></property>
+	 </bean>
+	 
+	 <!-- 
+	 	配置bean的  后置处理器：不需要配置id，IOC容器自动识别是一个BeanPostProcessor
+	 	实现BeanPostProcessor并重写两个方法
+		 	postProcessBeforeInitialization(Object bean, String beanName)：init-method之前被调用
+		 	postProcessAfterInitialization(Object bean, String beanName)：init-method之后被调用
+			 	bean：bean实例本身
+			 	beanName：IOC容器配置的bean的名字
+			 	返回值：实际返回给用户的Bean，可以在以上两个方法中修改返回的bean，甚至返回一个新的bean
+	 	 -->
+	 <bean class="spring.beans.cycle.MyBeanPostProcessor"></bean>
+	 
+</beans>

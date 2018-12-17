@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	 <!--bean之间的关系:继承，依赖 -->
+	 <!-- 注意java传统的继承和依赖 -->
+	 <!-- 而是配置文件的继承和依赖 -->
+	 <!-- 继承： -->
+	 
+	 <bean id="address" class="spring.beans.autowire.Address" 
+	 	p:city="BeiJing^" p:street="wudaokou"></bean>
+	 	
+	 <bean id="address2" class="spring.beans.autowire.Address" 
+	 	p:city="BeiJing2" p:street="street2"></bean>
+	 	
+	 <!-- 
+	 	上边两个address的配置，大部分属性是一样的（class，city，street等） 
+	 	那有没有可能address2使用address的配置呢
+	 	-->
+	 <!-- 
+	 	bean配置的继承：使用bean的parent配置。子bean从父bean中继承配置。
+	 	子bean可以覆盖父bean中的配置
+	  -->
+	 <bean id="address3" p:city="fuGaiBeiJing" p:street="extends" parent="address"></bean>
+	 
+	 <!-- 
+	 	父bean完全可以作为一个模板来出现，设置 <bean> 的abstract 属性为 true，Spring将不会实例化这个bean。
+	 	抽象bean不能被IOC容器实例化，只能用来被继承配置。
+	 	若某个bean class属性没有指定，则该bean必须是一个抽象bean
+	 	 -->
+	 <bean id="address_muban" 
+	 	p:city="BeiJing^" p:street="wudaokou" abstract="true"></bean>
+	 	
+	 <bean id="address_muban_child" class="spring.beans.autowire.Address"
+	 	 p:city="fuGaiBeiJing" p:street="extends" parent="address_muban"></bean>
+	 	 
+	 <bean id="book" class="spring.beans.autowire.Book" 
+	 	p:name="语文" p:price="29"></bean>
+	 <bean id="book2" class="spring.beans.autowire.Book" 
+	 	p:name="数学" p:price="33"></bean>
+	 <!-- 通用list -->
+	 <util:list id="books">
+	 	<ref bean="book"/>
+	 	<ref bean="book2"/>
+	 </util:list>
+	 
+	 <bean id="phone" class="spring.beans.autowire.Phone" 
+	 	p:name="Iphone"></bean>
+	 	 
+	 <!-- 
+	 	依赖: depends-on 属性设定 Bean 前置依赖的Bean
+	 	前置依赖的 Bean 会在本 Bean 实例化之前创建好
+	 	前置依赖于多个 Bean，则可以通过逗号，空格或的方式配置 Bean 的名称
+	 	-->
+	 <bean id="student" class="spring.beans.autowire.Student" 
+	 	p:name="Tom" p:address-ref="address_muban_child" depends-on="phone"></bean>
+	 	
+	 <!-- 在配置Student时，必须有一个books。也就是bean依赖于这个bean -->
+</beans>

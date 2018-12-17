@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+		
+	 <!--SPEL-->
+	 
+	 <!-- 使用 SPEL 为属性赋一个字面值 -->
+	<bean id="address" class="spring.beans.spel.Address">
+		<property name="city" value="#{'beijing'}"></property>
+		<property name="street" value="LIUDAOKOU"></property>
+	</bean>
+	
+	<!--使用spel 引用Java类的静态属性  -->
+	<bean id="car" class="spring.beans.spel.Car">
+		<property name="name" value="Audi"></property>
+		<property name="price" value="100000"></property>
+		<property name="tyrePerimeter" value="#{T(java.lang.Math).PI * 2}"></property>
+	</bean>
+	
+	<bean id="person" class="spring.beans.spel.Person">
+		<property name="name" value="zhangsan"></property>
+		<!-- 使用 spel引用其他的bean -->
+		<property name="car" value="#{car}"></property>
+		<!-- 
+			使用 spel引用其他bean的属性, 
+			并且链式操作
+			-->
+		<property name="city" value="#{address.city.toString().toUpperCase()}"></property>
+		<!-- 使用spel 运算符 -->
+		<property name="info" value="#{car.price > 300000 ? '金领' : '白领'}"></property>
+	</bean>
+</beans>
